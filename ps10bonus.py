@@ -167,7 +167,7 @@ if __name__ == "__main__":
 
 	print("Here are the loops I made:")	
 	print(configurations.keys())
-	print("What kind of loop do you want?")
+	print("What kind of loop do you want? [the lines don't really work atm, problem with display, they work with option 1 tho]")
 	loopname = input("enter loopname: ")
 	loop = configurations[loopname]
 	loopx,loopy,loopz = loop()
@@ -190,8 +190,9 @@ if __name__ == "__main__":
 		# quiver plot magnetic field
 		s,d=0.7,0.2
 		xarr,yarr,zarr = make_cube_grid(s=s,d=d)
-		mode=input("display mag field (b) or potential (a):")
-		if mode == 'm':
+		mode='c'
+		while mode not in ('a','b'):mode=input("display mag field (b) or vector potential (a):")
+		if mode == 'b':
 			uarr,varr,warr = calculate_magnetic_field(loop,xarr,yarr,zarr)
 			cmap='Greens'
 			label='Mag field'
