@@ -30,6 +30,9 @@ def circle_loop(r=1,n=50): # returns circle loop in x,y plane
 def long_line_segment(z=100):
 	return [0,0],[0,0],[-z,z]
 
+def line(z=100):
+	return np.zeros(20),np.zeros(20),np.linspace(-z,z,20)
+
 def square_loop(r=1):
 	return circle_loop(r,n=4)
 
@@ -156,7 +159,8 @@ if __name__ == "__main__":
 			square_loop.__name__:square_loop,
 			long_line_segment.__name__:long_line_segment,
 			pentagon_loop.__name__:pentagon_loop,
-			hexagon_loop.__name__:hexagon_loop}
+			hexagon_loop.__name__:hexagon_loop,
+			line.__name__:line}
 #	loopx,loopy,loopz = circle_loop(n=4)
 #	loopx,loopy,loopz = long_line_segment()
 #	get_vec_pot_at(loopx,loopy,loopz,xarr,yarr,zarr)
@@ -184,33 +188,31 @@ if __name__ == "__main__":
 	
 	elif choice==2:
 		# quiver plot magnetic field
-		s,d = 0.7,0.2
+		s,d=0.7,0.2
 		xarr,yarr,zarr = make_cube_grid(s=s,d=d)
-		uarr,varr,warr = calculate_magnetic_field(loop,xarr,yarr,zarr)
+		mode=input("display mag field (b) or potential (a):")
+		if mode == 'm':
+			uarr,varr,warr = calculate_magnetic_field(loop,xarr,yarr,zarr)
+			cmap='Greens'
+			label='Mag field'
+		else:
+			loopx,loopy,loopz = loop()
+			cmap='Reds'
+			label='Mag potential'
+			uarr,varr,warr = calculate_potential_field(loopx,loopy,loopz,xarr,yarr,zarr)
 		fig = plt.figure()
 		ax = fig.gca(projection='3d')
 		#o = np.sqrt(uarr**2 + varr**2 + zarr**2)
 		#o = np.random.random(uarr.shape)
 		c = np.hypot(np.hypot(uarr,varr),warr)
-		#c = np.concatenate((c,np.repeat(c,2)))
-		#c=plt.cm.hsv(c)
-		q=ax.quiver(xarr,yarr,zarr,uarr,varr,warr,color='g',cmap='Greens',alpha=0.9,length=0.05,lw=2,label="B field")
+		if loop.__name__=="line":q=ax.quiver(xarr,yarr,zarr,uarr,varr,warr,cmap='Greens',alpha=0.5,length=2.0,lw=2)
+		else: q=ax.quiver(xarr,yarr,zarr,uarr,varr,warr,cmap=cmap,alpha=0.5,length=0.05,lw=2,label=label)
 		#q.set_array(np.random.rand(np.prod(xarr.shape)))
 		q.set_array(c.flatten())
 		
-		#ax2 = fig.gca(projection='3d')
-		## magnetic potential plot
-		#loopx,loopy,loopz = loop()
-		#uarr,varr,warr = calculate_potential_field(loopx,loopy,loopz,xarr,yarr,zarr)
-		#r=ax2.quiver(xarr,yarr,zarr,uarr,varr,warr,color='r',cmap='Reds',alpha=0.8,length=0.05,lw=2,label="A field")
-		#c = np.hypot(np.hypot(uarr,varr),warr)
-		#r.set_array(c.flatten)
-
-		if loop.__name__ == "long_line_segment":
-			plt.plot([0,0],[0,0],[-s,s],color='b',label="loop")
-		else: 
-			plt.plot(loopx,loopy,loopz,color='b',label="loop")
-		plt.legend()
+		if loop.__name__=="line":plt.plot([0,0],[0,0],[-s,s],color='b')
+		else:plt.plot(loopx,loopy,loopz,color='b')
+		plt.legend()	
 		plt.show()
 
 

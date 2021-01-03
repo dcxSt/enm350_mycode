@@ -5,6 +5,14 @@ In this repository I put my e and m related code
 ## Assignment 10 pictures
 The coding question for pset 10 was to - for an arbitrary loop of current - find the magnetic vector potential. I went a step further and made a thing that gives you quiver plot of both the vector potential, and then uses finite element to approximate derivatives and find magnetic field too. See below quiver plots. The code (ps10bonus.py) also prompts the user to input a coordinate once they have selected their curve of choice, and returns the numerical value of both the vector potential and the magnetic field at the point you enter. 
 
+![mag potential1](magpot.png)
+
+![mag field 1](mag1.png)
+
+![mag field 2](mag2.png)
+
+![mag field 3](mag3.png)
+
 ## these pictures are from assignment 1
 GIF of charges
 ![check out this cool that i made for assignment 1](charges.gif)
